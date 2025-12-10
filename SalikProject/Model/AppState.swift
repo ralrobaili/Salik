@@ -9,6 +9,6 @@ import Combine
 
 class AppState: ObservableObject {
     @Published var isLoggedIn: Bool = false
-    @Published var selectedTab: Int = 0
+    @Published var selectedTab: Int = 0     // ← هذا أهم شيء
 }
 

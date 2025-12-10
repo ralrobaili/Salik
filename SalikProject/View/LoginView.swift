@@ -1,18 +1,16 @@
-//
-//  LoginView.swift
-//  SalikProject
-//
 import SwiftUI
 
 struct LoginView: View {
+
+    @ObservedObject var reportStore: ReportStore
+
     @State private var phoneNumber: String = ""
+    @State private var goToHome = false
+    @State private var goToGuest = false
 
-    @EnvironmentObject var user: UserModel
-    @EnvironmentObject var appState: AppState
-
-    var isValidPhone: Bool {
-        let digits = phoneNumber.allSatisfy { $0.isNumber }
-        return digits && phoneNumber.count == 9 && phoneNumber.first == "5"
+    private var isValidPhone: Bool {
+        let digitsOnly = phoneNumber.allSatisfy { $0.isNumber }
+        return digitsOnly && phoneNumber.count == 9 && phoneNumber.first == "5"
     }
 
     var body: some View {
@@ -56,13 +54,14 @@ struct LoginView: View {
                             .stroke(.gray.opacity(0.3), lineWidth: 1)
                     )
 
-                    Button(action: {
+                    Button {
                         if isValidPhone {
-                            user.name = "ضيف"
-                            user.phone = "+966 " + phoneNumber
-                            appState.isLoggedIn = true
+                            // نخزن الاسم والرقم لصفحة حسابي
+                            UserDefaults.standard.set("ضيف", forKey: "userName")
+                            UserDefaults.standard.set("+966 " + phoneNumber, forKey: "userPhone")
+                            goToHome = true
                         }
-                    }) {
+                    } label: {
                         HStack {
                             Spacer()
                             Text("إرسال رمز التحقق")
@@ -83,11 +82,11 @@ struct LoginView: View {
                         Rectangle().frame(height: 1).foregroundColor(.gray.opacity(0.3))
                     }
 
-                    Button(action: {
-                        user.name = "ضيف"
-                        user.phone = ""
-                        appState.isLoggedIn = true
-                    }) {
+                    Button {
+                        UserDefaults.standard.set("ضيف", forKey: "userName")
+                        UserDefaults.standard.removeObject(forKey: "userPhone")
+                        goToGuest = true
+                    } label: {
                         HStack {
                             Spacer()
                             Text("الدخول كضيف")
@@ -99,13 +98,13 @@ struct LoginView: View {
                         .cornerRadius(12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(.gray.opacity(0.3), lineWidth:1)
+                                .stroke(.gray.opacity(0.3), lineWidth: 1)
                         )
                     }
                 }
                 .padding()
                 .background(.white)
-                .cornerRadius(30)
+.cornerRadius(30)
                 .padding(.horizontal)
 
                 Spacer()
@@ -113,18 +112,23 @@ struct LoginView: View {
                 Text("بتسجيل الدخول أنت توافق على شروط الاستخدام وسياسة الخصوصية")
                     .font(.footnote)
                     .foregroundColor(.gray.opacity(0.8))
-Spacer().frame(height: 20)
+
+                Spacer().frame(height: 20)
             }
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $goToHome) {
+            MainTabView(reportStore: reportStore)
+                .navigationBarBackButtonHidden(true)
+        }
+        .navigationDestination(isPresented: $goToGuest) {
+            MainTabView(reportStore: reportStore)
+                .navigationBarBackButtonHidden(true)
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        LoginView()
-            .environmentObject(UserModel())
-            .environmentObject(AppState())
-            .environmentObject(ReportService())
+        LoginView(reportStore: ReportStore())
     }
 }

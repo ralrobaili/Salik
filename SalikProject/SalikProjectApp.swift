@@ -1,7 +1,6 @@
 //
 //  SalikProjectApp.swift
 //  SalikProject
-//
 
 
 import SwiftUI
@@ -9,27 +8,17 @@ import SwiftUI
 @main
 struct SalikProjectApp: App {
 
-    @StateObject var user = UserModel()
-    @StateObject var appState = AppState()
-    @StateObject var reportService = ReportService()
+    // المخزن الوحيد للتقارير في التطبيق
+    @StateObject private var reportStore = ReportStore()
+    @StateObject private var userModel = UserModel()
 
     var body: some Scene {
         WindowGroup {
-
             NavigationStack {
-                if appState.isLoggedIn {
-                    MainTabView()
-                        .environmentObject(user)
-                        .environmentObject(appState)
-                        .environmentObject(reportService)
-                } else {
-                    LoginView()
-                        .environmentObject(user)
-                        .environmentObject(appState)
-                        .environmentObject(reportService)
-                }
+                LoginView(reportStore: reportStore)
             }
-
+            .environmentObject(reportStore)
+            .environmentObject(userModel)
         }
     }
 }

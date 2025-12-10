@@ -1,19 +1,13 @@
 //
-//  MainTapView.swift
+//  MainTabView.swift
 //  SalikProject
 //
-//  Created by raghad alenezi on 16/06/1447 AH.
-
-//  MainTabView.swift
 
 import SwiftUI
 
 struct MainTabView: View {
 
-    @EnvironmentObject var user: UserModel
-    @EnvironmentObject var appState: AppState
-    @EnvironmentObject var reportService: ReportService
-
+    @ObservedObject var reportStore: ReportStore
     @State private var selectedTab = 0
 
     var body: some View {
@@ -23,23 +17,18 @@ struct MainTabView: View {
                 switch selectedTab {
                 case 0:
                     HomePageView()
-                        .environmentObject(user)
 
                 case 1:
-                    CaptureInstructionsView()
+                    CaptureInstructionsView(reportStore: reportStore)
 
                 case 2:
-                    ReportsContentView()
-                        .environmentObject(reportService)
+                    ReportsContentView(reportStore: reportStore)
 
                 case 3:
                     AccountView()
-                        .environmentObject(user)
-                        .environmentObject(appState)
 
                 default:
                     HomePageView()
-                        .environmentObject(user)
                 }
             }
 
@@ -87,6 +76,7 @@ struct MainTabView: View {
             .shadow(color: .black.opacity(0.07), radius: 8, y: -3)
         }
         .ignoresSafeArea(.keyboard)
+        .background(Color(.systemGray6).ignoresSafeArea())
     }
 }
 
@@ -131,9 +121,7 @@ struct TabButton: View {
         }
     }
 }
+
 #Preview {
-    MainTabView()
-        .environmentObject(AppState())
-        .environmentObject(UserModel())
-        .environmentObject(ReportService())
+    MainTabView(reportStore: ReportStore())
 }

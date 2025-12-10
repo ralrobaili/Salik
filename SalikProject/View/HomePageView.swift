@@ -2,22 +2,13 @@
 //  HomePageView.swift
 //  SalikProject
 //
-//  Created by raghad alenezi on 16/06/1447 AH.
-//
 
 import SwiftUI
 
 struct HomePageView: View {
 
-    @EnvironmentObject var user: UserModel
-
-    private var displayName: String {
-        user.name.isEmpty ? "ضيف" : user.name
-    }
-
-    private var firstLetter: String {
-        String(displayName.prefix(1))
-    }
+    private var displayName: String { "ضيف" }
+    private var firstLetter: String { String(displayName.prefix(1)) }
 
     var body: some View {
         ZStack {
@@ -25,6 +16,7 @@ struct HomePageView: View {
 
             VStack(alignment: .trailing, spacing: 0) {
 
+                // HEADER
                 HStack {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("مرحباً،")
@@ -53,6 +45,7 @@ struct HomePageView: View {
                 .padding(.horizontal)
                 .padding(.top, 24)
 
+                // EMERGENCY
                 HStack {
                     VStack(alignment: .trailing, spacing: 6) {
                         Text("في حالة الطوارئ")
@@ -62,34 +55,34 @@ struct HomePageView: View {
                             .font(.system(size: 15))
                             .foregroundColor(.gray)
                     }
-                    .frame(maxWidth: .infinity, alignment: .trailing)
 
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color(hex: "#FFE7D6"))
-                        .frame(width: 65, height: 65)
+                        .frame(width: 55, height: 55)
                         .overlay(
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .foregroundColor(.orange)
-                                .font(.system(size: 25))
+                                .font(.system(size: 24))
                         )
                 }
                 .padding()
                 .background(Color(hex: "#FCEAE2"))
                 .cornerRadius(25)
-                .shadow(color: .black.opacity(0.05), radius: 7, y: 3)
                 .padding(.horizontal)
                 .padding(.top, 20)
 
+                // TITLE
                 Text("معلومات تساعدك قبل توثيق الحادث")
                     .font(.system(size: 20, weight: .semibold))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.horizontal)
-                    .padding(.top, 14)
+                    .padding(.top, 10)
 
+                // CONTENT
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
+                    VStack(spacing: 25) {
 
-                        Spacer().frame(height: 5)
+                        Spacer().frame(height: 12)
 
                         infoCard(
                             title: "كيف تصوّر الحادث؟",
@@ -105,7 +98,7 @@ struct HomePageView: View {
                             title: "كيف يعمل الذكاء الاصطناعي؟",
                             icon: "aibrain",
                             iconColor: "#D7EDD6",
-bullets: [
+                            bullets: [
                                 "يتعرف على السيارة تلقائيًا",
                                 "يحدد موقع الضرر بدقة",
                                 "يحلل اتجاه السير والمركبات",
@@ -114,7 +107,7 @@ bullets: [
 
                         infoCard(
                             title: "ماذا تفعل بعد الحادث؟",
-                            icon: "shield.checkerboard",
+icon: "shield.checkerboard",
                             iconColor: "#E8F5E7",
                             bullets: [
                                 "قف في مكان آمن بعيدًا عن الطريق",
@@ -123,7 +116,7 @@ bullets: [
                                 "أرسل التقرير للتأمين"
                             ])
 
-                        Spacer().frame(height: 120)
+                        Spacer().frame(height: 80)
                     }
                     .padding(.horizontal)
                 }
@@ -177,11 +170,10 @@ private func infoCard(title: String, icon: String, iconColor: String, bullets: [
         .padding()
         .background(Color.white)
         .cornerRadius(25)
-        .shadow(color: .black.opacity(0.07), radius: 12, y: 4)
+        .shadow(color: .black.opacity(0.07), radius: 10, x: 0, y: 4)
     }
 }
 
 #Preview {
     HomePageView()
-        .environmentObject(UserModel())
 }

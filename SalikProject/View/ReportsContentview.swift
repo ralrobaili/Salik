@@ -1,113 +1,81 @@
-//
-//  ReportsContentView.swift
-//  SalikProject
-//
-//  Created by raghad alenezi on 16/06/1447 AH.
-//
-
 import SwiftUI
 
 struct ReportsContentView: View {
 
-    @EnvironmentObject var reportService: ReportService
+    @ObservedObject var reportStore: ReportStore
 
     var body: some View {
 
-        VStack(spacing: 0) {
+        VStack(alignment: .trailing) {
 
-            HStack {
+            Text("التقارير")
+                .font(.system(size: 22, weight: .semibold))
+                .padding()
+
+            if reportStore.reports.isEmpty {
                 Spacer()
-                Text("التقارير")
-                    .font(.system(size: 22, weight: .semibold))
+                Text("لا توجد تقارير حتى الآن")
+                    .foregroundColor(.gray)
                 Spacer()
             }
-            .padding()
-            .background(Color(.systemGray6))
-            .overlay(
-                Rectangle()
-                    .frame(height: 0.6)
-                    .foregroundColor(Color.black.opacity(0.12)),
-                alignment: .bottom
-            )
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 22) {
-                    ForEach(reportService.reports) { report in
-                        reportCard(report)
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(reportStore.reports.reversed()) { report in
+
+                        VStack(alignment: .trailing, spacing: 6) {
+
+                            HStack {
+                                Text(report.status)
+                                    .foregroundColor(.tabGreenDark)
+                                    .font(.system(size: 13))
+
+                                Spacer()
+
+                                Text("تقرير حادث")
+                                    .font(.system(size: 18, weight: .semibold))
+                            }
+
+                            HStack {
+                                Image(systemName: "mappin.and.ellipse")
+                                    .foregroundColor(.gray)
+
+                                Text(report.location)
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 14))
+                            }
+
+                            HStack {
+                                Image(systemName: "calendar")
+                                    .foregroundColor(.gray)
+
+                                Text(report.date.formatted(date: .abbreviated, time: .shortened))
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 14))
+                            }
+
+                            HStack {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundColor(.orange)
+
+                                Text(report.severity)
+                                    .font(.system(size: 14))
+
+                                Spacer()
+
+                                Text("\(report.errorPercentage)%")
+                                    .foregroundColor(.red)
+                                    .font(.system(size: 15, weight: .bold))
+                            }
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(18)
+                        .shadow(color: .black.opacity(0.05), radius: 6)
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 15)
+                .padding(.horizontal)
             }
-            .background(Color(.systemGray6))
         }
     }
-
-    @ViewBuilder
-    func reportCard(_ r: Report) -> some View {
-
-        VStack(alignment: .trailing, spacing: 14) {
-
-            HStack {
-                Text(r.status)
-                    .font(.system(size: 12, weight: .medium))
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 10)
-                    .background(Color.green.opacity(0.18))
-                    .cornerRadius(12)
-
-                Spacer()
-
-                HStack(spacing: 10) {
-                    Text(r.title)
-                        .font(.system(size: 18, weight: .semibold))
-
-                    Image(systemName: "doc.text.image")
-                        .font(.system(size: 30))
-                        .foregroundColor(Color.tabGreenDark)
-                }
-            }
-
-            HStack {
-                Image(systemName: "clock")
-                    .foregroundColor(.gray)
-                Text(r.formattedDate)
-                    .font(.system(size: 13))
-                    .foregroundColor(.gray)
-
-                Spacer()
-
-                Image(systemName: "mappin.and.ellipse")
-                    .foregroundColor(Color.tabGreenDark)
-                Text(r.location)
-                    .font(.system(size: 13))
-                    .foregroundColor(.gray)
-            }
-
-            HStack {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundColor(Color.orange.opacity(0.65))
-                Text(r.severity)
-                    .font(.system(size: 14))
-                    .foregroundColor(Color.orange.opacity(0.75))
-
-                Spacer()
-
-                Text("خطأ \(r.errorPercentage)%")
-                    .font(.system(size: 14))
-                    .foregroundColor(.red)
-            }
-
-        }
-        .padding(20)
-        .frame(maxWidth: .infinity)
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(color: .black.opacity(0.06), radius: 6, y: 3)
-    }
-}
-
-#Preview {
-    ReportsContentView()
-        .environmentObject(ReportService())
 }

@@ -1,194 +1,168 @@
 //
 //  AccountView.swift
+//
+//  AccountView.swift
 //  SalikProject
 //
-//  Created by raghad alenezi on 16/06/1447 AH.
-//
-
-
 import SwiftUI
 
 struct AccountView: View {
 
-    @EnvironmentObject var user: UserModel
-    @State private var showLogoutAlert = false
-    @State private var goLogin = false
+    @State private var name = UserDefaults.standard.string(forKey: "userName") ?? "ضيف"
+    @State private var phone = UserDefaults.standard.string(forKey: "userPhone") ?? "+966XXXXXXXXX"
 
-    private var displayName: String {
-        user.name.isEmpty ? "سميه" : user.name
-    }
-
-    private var displayPhone: String {
-        user.phone.isEmpty ? "+966512345678" : user.phone
-    }
+    @State private var showEdit = false
 
     var body: some View {
 
-        VStack(spacing: 0) {
+        ScrollView {
+            VStack(spacing: 26) {
 
-            Text("الحساب")
-                .font(.system(size: 22, weight: .semibold))
-                .padding(.top, 16)
-                .padding(.bottom, 8)
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
+                // بطاقة المستخدم
+                HStack {
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 22) {
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text(name)
+                            .font(.system(size: 20, weight: .bold))
 
-                    VStack(spacing: 18) {
-
-                        HStack(spacing: 12) {
-
-                            Button {
-                                print("فتح صفحة البروفايل قريباً")
-                            } label: {
-                                RoundedRectangle(cornerRadius: 14)
-                                    .fill(Color.white)
-                                    .frame(width: 60, height: 60)
-                                    .overlay(
-                                        Image(systemName: "person")
-                                            .font(.system(size: 26))
-                                            .foregroundColor(.gray)
-                                    )
-                            }
-
-                            VStack(alignment: .trailing, spacing: 6) {
-                                Text(displayName)
-                                    .font(.system(size: 20, weight: .bold))
-
-                                HStack(spacing: 4) {
-                                    Text(displayPhone)
-                                        .font(.system(size: 15))
-                                        .foregroundColor(.gray)
-
-                                    Image(systemName: "phone")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 14)
-                                    .fill(Color.tabGreenDark)
-                                    .frame(width: 56, height: 56)
-
-                                Text(String(displayName.prefix(1)))
-                                    .font(.system(size: 26, weight: .bold))
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .padding(14)
-                        .background(Color.white)
-                        .cornerRadius(20)
-                        .shadow(color: .black.opacity(0.05), radius: 5, y: 1)
-
-                        HStack(spacing: 14) {
-                            statBox(number: 0, title: "تقارير")
-                            statBox(number: 0, title: "تم إرسالها")
-                            statBox(number: 0, title: "قيد المعالجة")
-                        }
-
+                        Text(phone)
+                            .font(.system(size: 15))
+                            .foregroundColor(.gray)
                     }
-                    .padding(.horizontal)
 
-                    VStack(spacing: 20) {
-                        settingsRow(title: "اللغة", icon: "globe", value: "العربية")
-                        settingsRow(title: "الإشعارات", icon: "bell", value: "مفعل")
-                        settingsRow(title: "الخصوصية والأمان", icon:"shield")
-                        settingsRow(title: "الشروط والأحكام", icon: "doc.text")
-                        settingsRow(title: "الدعم والمساعدة", icon: "questionmark.circle")
-                    }
-                    .padding()
-                    .
-background(Color.white)
-                    .cornerRadius(22)
-                    .shadow(color: .black.opacity(0.05), radius: 5, y: 1)
-                    .padding(.horizontal)
+                    Spacer()
 
                     Button {
-                        showLogoutAlert = true
+                        showEdit = true
                     } label: {
-                        HStack {
-                            Spacer()
-                            Text("تسجيل خروج")
-                                .foregroundColor(.red)
-                                .font(.system(size: 17, weight: .medium))
-                            Spacer()
-                        }
+                        Image(systemName: "person.crop.circle")
+                            .font(.system(size: 32))
+                            .foregroundColor(.tabGreenDark)
+                    }
+                }
+                .padding()
+                .background(Color.white)
+                .cornerRadius(18)
+                .shadow(color: .black.opacity(0.05), radius: 6)
+
+                // أرقام التقارير والتاريخ
+                HStack(spacing: 12) {
+
+                    HomeSmallBox(number: "1", label: "قيد المعالجة")
+                    HomeSmallBox(number: "2", label: "تم إرسالها")
+                    HomeSmallBox(number: "3", label: "تقارير")
+
+                }
+                .padding(.horizontal)
+
+                // قائمة الإعدادات
+                VStack(spacing: 0) {
+                    SettingsRow(title: "اللغة", icon: "globe")
+                    SettingsRow(title: "الإشعارات", icon: "bell")
+                    SettingsRow(title: "الخصوصية والأمان", icon: "lock.shield")
+                    SettingsRow(title: "الشروط والأحكام", icon: "doc.plaintext")
+                    SettingsRow(title: "الدعم والمساعدة", icon: "questionmark.circle")
+                }
+                .padding(.horizontal)
+
+                Button {
+                    UserDefaults.standard.removeObject(forKey: "userName")
+                    UserDefaults.standard.removeObject(forKey: "userPhone")
+                } label: {
+                    Text("تسجيل خروج")
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.red.opacity(0.08))
-                        .cornerRadius(16)
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 2)
-                    .alert("هل أنت متأكد من تسجيل الخروج؟", isPresented: $showLogoutAlert) {
-                        Button("نعم", role: .destructive) {
-                            user.name = ""
-                            user.phone = ""
-                            goLogin = true
-                        }
-                        Button("إلغاء", role: .cancel) {}
-                    }
+                        .background(Color.white)
+                        .cornerRadius(14)
+                }
+                .padding(.horizontal)
+            }
+            .padding(.top)
+        }
+        .sheet(isPresented: $showEdit) {
+            EditAccountSheet(name: $name, phone: $phone)
+        }
+    }
+}
 
-                    Text("سالك الإصدار 1.1")
-                        .font(.footnote)
-                        .foregroundColor(.gray.opacity(0.7))
-                        .padding(.vertical, 10)
+struct HomeSmallBox: View {
+    let number: String
+    let label: String
 
-                    Spacer().frame(height: 30)
+    var body: some View {
+        VStack {
+            Text(number)
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.tabGreenDark)
+
+            Text(label)
+                .font(.system(size: 13))
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 4)
+    }
+}
+
+struct SettingsRow: View {
+    let title: String
+    let icon: String
+
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(.gray)
+            Spacer()
+            Text(title)
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(14)
+        .shadow(color: .black.opacity(0.03), radius: 3)
+        .padding(.vertical, 4)
+    }
+}
+
+struct EditAccountSheet: View {
+
+    @Binding var name: String
+    @Binding var phone: String
+
+    @Environment(\.dismiss) var dismiss
+
+    @State private var tempName = ""
+    @State private var tempPhone = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                TextField("الاسم", text: $tempName)
+TextField("رقم الجوال", text: $tempPhone)
+            }
+            .navigationTitle("تعديل البيانات")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("حفظ") {
+                        name = tempName
+                        phone = tempPhone
+                        UserDefaults.standard.set(name, forKey: "userName")
+                        UserDefaults.standard.set(phone, forKey: "userPhone")
+                        dismiss()
+                    }
                 }
             }
-            .background(Color(.systemGray6))
+            .onAppear {
+                tempName = name
+                tempPhone = phone
+            }
         }
-        .navigationDestination(isPresented: $goLogin) {
-            LoginView()
-                .environmentObject(user)
-                .navigationBarBackButtonHidden(true)
-        }
-        .navigationBarBackButtonHidden(true)
     }
-}
-
-
-
-func statBox(number: Int, title: String) -> some View {
-    VStack(spacing: 6) {
-        Text("\(number)")
-            .font(.system(size: 20, weight: .bold))
-            .foregroundColor(Color.tabGreenDark)
-
-        Text(title)
-            .font(.system(size: 14))
-            .foregroundColor(.gray)
-    }
-    .frame(maxWidth: .infinity)
-    .padding()
-    .background(Color.white)
-    .cornerRadius(18)
-    .shadow(color: .black.opacity(0.05), radius: 4, y: 1)
-}
-
-func settingsRow(title: String, icon: String, value: String? = nil) -> some View {
-    HStack {
-        if let value = value {
-            Text(value)
-                .foregroundColor(.gray)
-        }
-
-        Spacer()
-
-        Text(title)
-            .foregroundColor(.black)
-
-        Image(systemName: icon)
-            .foregroundColor(.gray)
-    }
-    .padding(.vertical, 14)
-    .padding(.horizontal)
 }
 #Preview {
     AccountView()
         .environmentObject(UserModel())
+        .environmentObject(ReportStore())
 }

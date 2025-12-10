@@ -1,3 +1,8 @@
+//
+//  CarsDocView.swift
+//  SalikProject
+//
+
 import SwiftUI
 
 struct ProgressBar: View {
@@ -24,12 +29,13 @@ struct ProgressBar: View {
 
 struct CarsDocView: View {
 
+    let images: [UIImage]
+
+    @Environment(\.dismiss) private var dismiss
     @State private var openPDF = false
     @State private var pdfURL: URL?
 
-    let images: [UIImage]
-
-    var currentGregorianDate: String {
+    private var currentGregorianDate: String {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "ar_SA")
@@ -37,14 +43,13 @@ struct CarsDocView: View {
         return formatter.string(from: Date())
     }
 
-    @Environment(\.dismiss) var dismiss
-
     var body: some View {
         VStack(spacing: 0) {
 
+            // الهيدر
             HStack {
                 Button {
-                    dismiss()
+                    dismiss()    // <<< يرجع خطوة واحدة
                 } label: {
                     Image(systemName: "chevron.backward")
                         .font(.system(size: 18, weight: .semibold))
@@ -75,6 +80,7 @@ struct CarsDocView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 18) {
 
+                    // تم التحليل بنجاح
                     HStack {
                         VStack(alignment: .trailing, spacing: 4) {
                             Text("تم تحليل الحادث بنجاح")
@@ -104,6 +110,7 @@ struct CarsDocView: View {
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
 
+                    // الموقع والتاريخ
                     VStack(alignment: .trailing, spacing: 14) {
 
                         HStack {
@@ -113,10 +120,11 @@ struct CarsDocView: View {
 
                                 Text("المملكة العربية السعودية")
                                     .font(.system(size: 13))
-                                    .foregroundColor(.gray)
+.foregroundColor(.gray)
                             }
                             .frame(maxWidth: .infinity, alignment: .trailing)
-Image(systemName: "mappin.and.ellipse")
+
+                            Image(systemName: "mappin.and.ellipse")
                                 .foregroundColor(.green)
                         }
 
@@ -137,6 +145,7 @@ Image(systemName: "mappin.and.ellipse")
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
+                    // تحليل الأضرار
                     VStack(alignment: .trailing, spacing: 14) {
 
                         HStack {
@@ -183,6 +192,7 @@ Image(systemName: "mappin.and.ellipse")
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
+                    // تحديد المتسبب
                     let percentageA = 70.0
                     let percentageB = 30.0
 
@@ -202,15 +212,16 @@ Image(systemName: "mappin.and.ellipse")
                             HStack {
                                 Text("70%")
                                     .foregroundColor(.red)
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .font(.
+system(size: 15, weight: .semibold))
 
                                 Spacer()
 
                                 Text("سيارتك")
                                     .font(.system(size: 14))
                                     .foregroundColor(.gray)
-Text("A")
-                                    .font(.system(size: 18, weight: .bold))
+
+                                Text("A").font(.system(size: 18, weight: .bold))
                                     .frame(width: 40, height: 40)
                                     .background(Color.red.opacity(0.15))
                                     .cornerRadius(10)
@@ -248,6 +259,7 @@ Text("A")
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
+                    // تفاصيل تقنية
                     VStack(alignment: .trailing, spacing: 12) {
 
                         Text("تفاصيل تقنية")
@@ -291,23 +303,24 @@ Text("A")
                         }
                     }
                     .padding()
-                    .background(Color.white)
+.background(Color.white)
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
+                    // صور الحادث (من الصور الحقيقية)
                     VStack(alignment: .trailing, spacing: 12) {
-Text("صور الحادث")
+                        Text("صور الحادث")
                             .font(.system(size: 16, weight: .semibold))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
 
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                            ForEach(0..<4) { _ in
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(hex: "F6F6F6"))
+                            ForEach(images.indices, id: \.self) { index in
+                                Image(uiImage: images[index])
+                                    .resizable()
+                                    .scaledToFill()
                                     .frame(height: 90)
-                                    .overlay(
-                                        Image(systemName: "photo")
-                                            .foregroundColor(.gray)
-                                    )
+                                    .clipped()
+                                    .cornerRadius(12)
                             }
                         }
                     }
@@ -316,6 +329,7 @@ Text("صور الحادث")
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
+                    // أزرار PDF / إرسال
                     HStack(spacing: 14) {
 
                         Button {
@@ -335,6 +349,7 @@ Text("صور الحادث")
                         }
 
                         Button {
+                            // هنا تضعين منطق الإرسال للتأمين لاحقاً
                         } label: {
                             HStack {
                                 Image(systemName: "paperplane.fill")
@@ -362,7 +377,7 @@ Text("صور الحادث")
         }
     }
 
-    func generatePDF() -> URL {
+    private func generatePDF() -> URL {
         let pdfMetaData = [
             kCGPDFContextCreator: "Salik App",
             kCGPDFContextAuthor: "AI Damage Analysis"
@@ -403,7 +418,7 @@ Text("صور الحادث")
             paragraphStyle.lineSpacing = 8
 
             let bodyAttributes: [NSAttributedString.Key: Any] = [
-.font: UIFont.systemFont(ofSize: 18),
+                .font: UIFont.systemFont(ofSize: 18),
                 .paragraphStyle: paragraphStyle
             ]
 

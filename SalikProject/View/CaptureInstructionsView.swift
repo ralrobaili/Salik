@@ -1,6 +1,12 @@
+//  CaptureInstructionsView.swift
+//  SalikProject
+//
+
 import SwiftUI
 
 struct CaptureInstructionsView: View {
+
+    @ObservedObject var reportStore: ReportStore
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -58,7 +64,7 @@ struct CaptureInstructionsView: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
 
                     tipRow(text: "تأكد من وضوح الصورة وعدم وجود ظلال")
-                    tipRow(text: "خذ الصورة من مسافة مناسبة (٢-٣ أمتار)")
+                    tipRow(text: "خذ الصورة من مسافة مناسبة (٢–٣ أمتار)")
                     tipRow(text: "تأكد من ظهور الأضرار بوضوح")
                 }
                 .padding()
@@ -71,7 +77,7 @@ struct CaptureInstructionsView: View {
         }
         .safeAreaInset(edge: .bottom) {
             NavigationLink {
-                CameraStepsView()
+                CameraStepsView(reportStore: reportStore)
             } label: {
                 HStack {
                     Text("ابدأ التصوير")
@@ -97,12 +103,12 @@ private func captureItem(number: String, title: String, subtitle: String) -> som
     HStack {
         VStack(alignment: .trailing, spacing: 3) {
             Text(title)
-                .font(.system(size: 16, weight: .semibold))
+                .font(.
+system(size: 16, weight: .semibold))
 
             Text(subtitle)
                 .font(.system(size: 14))
-                .
-foregroundColor(.gray)
+                .foregroundColor(.gray)
         }
 
         ZStack {
@@ -129,11 +135,10 @@ private func tipRow(text: String) -> some View {
             .fill(Color.orange)
             .frame(width: 8, height: 8)
     }
-    .frame(maxWidth: .infinity, alignment: .trailing)
 }
 
 #Preview {
     NavigationStack {
-        CaptureInstructionsView()
+        CaptureInstructionsView(reportStore: ReportStore())
     }
 }

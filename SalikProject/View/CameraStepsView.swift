@@ -1,4 +1,3 @@
-//
 //  CameraStepsView.swift
 //  SalikProject
 //
@@ -7,16 +6,14 @@ import SwiftUI
 
 struct CameraStepsView: View {
 
-    // << حذفنا الـ EnvironmentObject هنا
-    // @EnvironmentObject var reportService: ReportService
-    // @EnvironmentObject var appState: AppState
+    @ObservedObject var reportStore: ReportStore
 
     @State private var stepIndex = 0
     @State private var capturedImages: [UIImage] = []
     @State private var showCamera = false
     @State private var goToProcessing = false
 
-    let steps = [
+    private let steps = [
         "صوّر مقدمة السيارة",
         "صوّر الجهة الخلفية",
         "صوّر الجهة اليمنى",
@@ -50,7 +47,6 @@ struct CameraStepsView: View {
             }
         }
 
-        // زر التقاط الصورة
         .safeAreaInset(edge: .bottom) {
             VStack {
                 Button {
@@ -71,22 +67,33 @@ struct CameraStepsView: View {
             .shadow(color: .black.opacity(0.1), radius: 8, y: -2)
         }
 
-        // الكاميرا فل سكرين
         .fullScreenCover(isPresented: $showCamera) {
-            CameraSystemView { img in
-                capturedImages.append(img)
+            CameraSystemView { image in
+                capturedImages.append(image)
 
                 if stepIndex < 4 {
                     stepIndex += 1
                 } else {
-                    goToProcessing = true
+                    showCamera = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        goToProcessing = true
+                    }
                 }
             }
         }
 
+        // الانتقال لصفحة المعالجة
         .navigationDestination(isPresented: $goToProcessing) {
-            AIProcessingView(images: capturedImages)
-      
+            AIProcessingView(
+                images: capturedImages,
+                reportStore: reportStore
+            )
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        CameraStepsView(reportStore: ReportStore())
     }
 }
