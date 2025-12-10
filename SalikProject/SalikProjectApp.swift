@@ -2,16 +2,34 @@
 //  SalikProjectApp.swift
 //  SalikProject
 //
-//  Created by raghad alenezi on 16/06/1447 AH.
-//
+
 
 import SwiftUI
 
 @main
 struct SalikProjectApp: App {
+
+    @StateObject var user = UserModel()
+    @StateObject var appState = AppState()
+    @StateObject var reportService = ReportService()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+
+            NavigationStack {
+                if appState.isLoggedIn {
+                    MainTabView()
+                        .environmentObject(user)
+                        .environmentObject(appState)
+                        .environmentObject(reportService)
+                } else {
+                    LoginView()
+                        .environmentObject(user)
+                        .environmentObject(appState)
+                        .environmentObject(reportService)
+                }
+            }
+
         }
     }
 }

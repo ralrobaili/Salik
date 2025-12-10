@@ -1,0 +1,187 @@
+//
+//  HomePageView.swift
+//  SalikProject
+//
+//  Created by raghad alenezi on 16/06/1447 AH.
+//
+
+import SwiftUI
+
+struct HomePageView: View {
+
+    @EnvironmentObject var user: UserModel
+
+    private var displayName: String {
+        user.name.isEmpty ? "ضيف" : user.name
+    }
+
+    private var firstLetter: String {
+        String(displayName.prefix(1))
+    }
+
+    var body: some View {
+        ZStack {
+            Color(.systemGray6).ignoresSafeArea()
+
+            VStack(alignment: .trailing, spacing: 0) {
+
+                HStack {
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("مرحباً،")
+                            .font(.system(size: 18))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+
+                        HStack(spacing: 4) {
+                            Text(displayName)
+                                .font(.system(size: 24, weight: .bold))
+                            Text("👋")
+                                .font(.system(size: 24))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 22)
+                            .fill(Color.tabGreenDark)
+                            .frame(width: 60, height: 60)
+
+                        Text(firstLetter)
+                            .foregroundColor(.white)
+                            .font(.system(size: 28, weight: .bold))
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.top, 24)
+
+                HStack {
+                    VStack(alignment: .trailing, spacing: 6) {
+                        Text("في حالة الطوارئ")
+                            .font(.system(size: 18, weight: .semibold))
+
+                        Text("إذا كان هناك إصابات، اتصل فوراً على 911")
+                            .font(.system(size: 15))
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color(hex: "#FFE7D6"))
+                        .frame(width: 65, height: 65)
+                        .overlay(
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.orange)
+                                .font(.system(size: 25))
+                        )
+                }
+                .padding()
+                .background(Color(hex: "#FCEAE2"))
+                .cornerRadius(25)
+                .shadow(color: .black.opacity(0.05), radius: 7, y: 3)
+                .padding(.horizontal)
+                .padding(.top, 20)
+
+                Text("معلومات تساعدك قبل توثيق الحادث")
+                    .font(.system(size: 20, weight: .semibold))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.horizontal)
+                    .padding(.top, 14)
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 20) {
+
+                        Spacer().frame(height: 5)
+
+                        infoCard(
+                            title: "كيف تصوّر الحادث؟",
+                            icon: "camera.fill",
+                            iconColor: "#CDE6C6",
+                            bullets: [
+                                "صوّر كل الجهات (أمام، خلف، يمين، يسار)",
+                                "خذ صورة واضحة للأضرار",
+                                "التقط صورة عامة للموقع"
+                            ])
+
+                        infoCard(
+                            title: "كيف يعمل الذكاء الاصطناعي؟",
+                            icon: "aibrain",
+                            iconColor: "#D7EDD6",
+bullets: [
+                                "يتعرف على السيارة تلقائيًا",
+                                "يحدد موقع الضرر بدقة",
+                                "يحلل اتجاه السير والمركبات",
+                                "يحسب نسبة الخطأ لكل طرف"
+                            ])
+
+                        infoCard(
+                            title: "ماذا تفعل بعد الحادث؟",
+                            icon: "shield.checkerboard",
+                            iconColor: "#E8F5E7",
+                            bullets: [
+                                "قف في مكان آمن بعيدًا عن الطريق",
+                                "شغّل الفلشر والإشارات التحذيرية",
+                                "وثّق الحادث بالتطبيق",
+                                "أرسل التقرير للتأمين"
+                            ])
+
+                        Spacer().frame(height: 120)
+                    }
+                    .padding(.horizontal)
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+private func infoCard(title: String, icon: String, iconColor: String, bullets: [String]) -> some View {
+    VStack(alignment: .trailing, spacing: 14) {
+
+        HStack {
+            VStack(alignment: .trailing, spacing: 8) {
+
+                Text(title)
+                    .font(.system(size: 18, weight: .semibold))
+
+                ForEach(bullets, id: \.self) { text in
+                    HStack {
+                        Text(text)
+                            .font(.system(size: 15))
+                            .multilineTextAlignment(.trailing)
+
+                        Circle()
+                            .fill(Color.tabGreenDark)
+                            .frame(width: 8, height: 8)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color(hex: iconColor))
+                .frame(width: 65, height: 65)
+                .overlay(
+                    Group {
+                        if UIImage(named: icon) != nil {
+                            Image(icon)
+                                .resizable()
+                                .scaledToFit()
+                                .padding(12)
+                        } else {
+                            Image(systemName: icon)
+                                .foregroundColor(Color.tabGreenDark)
+                                .font(.system(size: 26))
+                        }
+                    }
+                )
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(25)
+        .shadow(color: .black.opacity(0.07), radius: 12, y: 4)
+    }
+}
+
+#Preview {
+    HomePageView()
+        .environmentObject(UserModel())
+}
