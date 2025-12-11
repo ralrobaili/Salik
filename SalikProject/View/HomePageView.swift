@@ -2,6 +2,9 @@
 //  HomePageView.swift
 //  SalikProject
 //
+//
+//  Created by raghad alenezi on 16/06/1447 AH.
+//
 
 import SwiftUI
 
@@ -16,7 +19,6 @@ struct HomePageView: View {
 
             VStack(alignment: .trailing, spacing: 0) {
 
-                // HEADER
                 HStack {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("مرحباً،")
@@ -45,7 +47,6 @@ struct HomePageView: View {
                 .padding(.horizontal)
                 .padding(.top, 24)
 
-                // EMERGENCY
                 HStack {
                     VStack(alignment: .trailing, spacing: 6) {
                         Text("في حالة الطوارئ")
@@ -71,14 +72,12 @@ struct HomePageView: View {
                 .padding(.horizontal)
                 .padding(.top, 20)
 
-                // TITLE
                 Text("معلومات تساعدك قبل توثيق الحادث")
                     .font(.system(size: 20, weight: .semibold))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.horizontal)
                     .padding(.top, 10)
 
-                // CONTENT
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 25) {
 

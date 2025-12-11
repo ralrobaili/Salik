@@ -16,3 +16,4 @@ final class UserModel: ObservableObject {
         phone = ""
     }
 }
+

@@ -1,7 +1,9 @@
 //  CameraStepsView.swift
+//
 //  SalikProject
 //
-
+//  Created by raghad alenezi on 16/06/1447 AH.
+//
 import SwiftUI
 
 struct CameraStepsView: View {
@@ -82,7 +84,6 @@ struct CameraStepsView: View {
             }
         }
 
-        // الانتقال لصفحة المعالجة
         .navigationDestination(isPresented: $goToProcessing) {
             AIProcessingView(
                 images: capturedImages,

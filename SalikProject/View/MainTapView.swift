@@ -22,10 +22,11 @@ struct MainTabView: View {
                     CaptureInstructionsView(reportStore: reportStore)
 
                 case 2:
-                    ReportsContentView(reportStore: reportStore)
+                    ReportsContentView()
 
                 case 3:
                     AccountView()
+                        .environmentObject(reportStore)
 
                 default:
                     HomePageView()
@@ -77,6 +78,7 @@ struct MainTabView: View {
         }
         .ignoresSafeArea(.keyboard)
         .background(Color(.systemGray6).ignoresSafeArea())
+        .environmentObject(reportStore)
     }
 }
 

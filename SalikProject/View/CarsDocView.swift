@@ -2,7 +2,9 @@
 //  CarsDocView.swift
 //  SalikProject
 //
-
+//
+//  Created by raghad alenezi on 16/06/1447 AH.
+//
 import SwiftUI
 
 struct ProgressBar: View {
@@ -46,10 +48,9 @@ struct CarsDocView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            // الهيدر
             HStack {
                 Button {
-                    dismiss()    // <<< يرجع خطوة واحدة
+                    dismiss()
                 } label: {
                     Image(systemName: "chevron.backward")
                         .font(.system(size: 18, weight: .semibold))
@@ -80,7 +81,6 @@ struct CarsDocView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 18) {
 
-                    // تم التحليل بنجاح
                     HStack {
                         VStack(alignment: .trailing, spacing: 4) {
                             Text("تم تحليل الحادث بنجاح")
@@ -110,7 +110,6 @@ struct CarsDocView: View {
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
 
-                    // الموقع والتاريخ
                     VStack(alignment: .trailing, spacing: 14) {
 
                         HStack {
@@ -145,7 +144,6 @@ struct CarsDocView: View {
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
-                    // تحليل الأضرار
                     VStack(alignment: .trailing, spacing: 14) {
 
                         HStack {
@@ -192,7 +190,6 @@ struct CarsDocView: View {
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
-                    // تحديد المتسبب
                     let percentageA = 70.0
                     let percentageB = 30.0
 
@@ -259,7 +256,6 @@ system(size: 15, weight: .semibold))
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
-                    // تفاصيل تقنية
                     VStack(alignment: .trailing, spacing: 12) {
 
                         Text("تفاصيل تقنية")
@@ -276,7 +272,7 @@ system(size: 15, weight: .semibold))
                             }
                             Spacer()
                             VStack(alignment: .trailing) {
-                                Text("حالة الطريق")
+                          Text("حالة الطريق")
                                     .foregroundColor(.gray)
                                     .font(.system(size: 13))
                                 Text("جيدة")
@@ -307,7 +303,6 @@ system(size: 15, weight: .semibold))
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
-                    // صور الحادث (من الصور الحقيقية)
                     VStack(alignment: .trailing, spacing: 12) {
                         Text("صور الحادث")
                             .font(.system(size: 16, weight: .semibold))
@@ -329,7 +324,6 @@ system(size: 15, weight: .semibold))
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.05), radius: 8, y: 3)
 
-                    // أزرار PDF / إرسال
                     HStack(spacing: 14) {
 
                         Button {
@@ -349,7 +343,6 @@ system(size: 15, weight: .semibold))
                         }
 
                         Button {
-                            // هنا تضعين منطق الإرسال للتأمين لاحقاً
                         } label: {
                             HStack {
                                 Image(systemName: "paperplane.fill")

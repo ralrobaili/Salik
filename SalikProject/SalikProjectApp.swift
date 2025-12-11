@@ -8,7 +8,6 @@ import SwiftUI
 @main
 struct SalikProjectApp: App {
 
-    // المخزن الوحيد للتقارير في التطبيق
     @StateObject private var reportStore = ReportStore()
     @StateObject private var userModel = UserModel()
 
