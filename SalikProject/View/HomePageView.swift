@@ -84,6 +84,17 @@ struct HomePageView: View {
                         Spacer().frame(height: 12)
 
                         infoCard(
+                            title: "ماذا تفعل بعد الحادث؟",
+icon: "shield.checkerboard",
+                            iconColor: "#E8F5E7",
+                            bullets: [
+                                "قف في مكان آمن بعيدًا عن الطريق",
+                                "شغّل الفلشر والإشارات التحذيرية",
+                                "وثّق الحادث بالتطبيق",
+                                "أرسل التقرير للتأمين"
+                            ])
+                        
+                        infoCard(
                             title: "كيف تصوّر الحادث؟",
                             icon: "camera.fill",
                             iconColor: "#CDE6C6",
@@ -104,16 +115,7 @@ struct HomePageView: View {
                                 "يحسب نسبة الخطأ لكل طرف"
                             ])
 
-                        infoCard(
-                            title: "ماذا تفعل بعد الحادث؟",
-icon: "shield.checkerboard",
-                            iconColor: "#E8F5E7",
-                            bullets: [
-                                "قف في مكان آمن بعيدًا عن الطريق",
-                                "شغّل الفلشر والإشارات التحذيرية",
-                                "وثّق الحادث بالتطبيق",
-                                "أرسل التقرير للتأمين"
-                            ])
+    
 
                         Spacer().frame(height: 80)
                     }

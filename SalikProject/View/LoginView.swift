@@ -56,7 +56,6 @@ struct LoginView: View {
 
                     Button {
                         if isValidPhone {
-                            // نخزن الاسم والرقم لصفحة حسابي
                             UserDefaults.standard.set("ضيف", forKey: "userName")
                             UserDefaults.standard.set("+966 " + phoneNumber, forKey: "userPhone")
                             goToHome = true

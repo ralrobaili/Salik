@@ -272,31 +272,15 @@ system(size: 15, weight: .semibold))
                             }
                             Spacer()
                             VStack(alignment: .trailing) {
-                          Text("حالة الطريق")
-                                    .foregroundColor(.gray)
-                                    .font(.system(size: 13))
-                                Text("جيدة")
-                                    .font(.system(size: 15, weight: .semibold))
-                            }
-                        }
-
-                        HStack {
-                            VStack(alignment: .trailing) {
                                 Text("السرعة التقديرية")
                                     .foregroundColor(.gray)
                                     .font(.system(size: 13))
                                 Text("25–35 كم/س")
                                     .font(.system(size: 15, weight: .semibold))
                             }
-                            Spacer()
-                            VStack(alignment: .trailing) {
-                                Text("علامات الفرامل")
-                                    .foregroundColor(.gray)
-                                    .font(.system(size: 13))
-                                Text("مخففة")
-                                    .font(.system(size: 15, weight: .semibold))
-                            }
                         }
+
+            
                     }
                     .padding()
 .background(Color.white)
@@ -346,7 +330,7 @@ system(size: 15, weight: .semibold))
                         } label: {
                             HStack {
                                 Image(systemName: "paperplane.fill")
-                                Text("إرسال للتأمين")
+                                Text("إرسال للجهة المعنية")
                             }
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
