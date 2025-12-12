@@ -19,10 +19,8 @@ struct AccountView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 28) {
 
-                // 🔶 بطاقة المستخدم
                 AccountHeaderView(name: name, phone: phone)
 
-                // 🔶 البوكسات
                 HStack(spacing: 12) {
                     StatusBox(number: "0", label: "قيد المعالجة")
                     StatusBox(number: "0", label: "تم إرسالها")
@@ -30,7 +28,6 @@ struct AccountView: View {
                 }
                 .padding(.horizontal)
 
-                // 🔶 قائمة الإعدادات
                 VStack(spacing: 10) {
 
                     SettingsRow(title: "اللغة", icon: "globe", value: "العربية")
@@ -42,7 +39,6 @@ struct AccountView: View {
                 }
                 .padding(.horizontal)
 
-                // 🔶 زر تسجيل الخروج
                 Button {
                     showLogoutAlert = true
                 } label: {
@@ -66,7 +62,7 @@ struct AccountView: View {
                         UserDefaults.standard.removeObject(forKey: "userName")
                         UserDefaults.standard.removeObject(forKey: "userPhone")
 
-                        // يرجع لصفحة تسجيل الدخول باستخدام نافذة المشهد الحالية (iOS 15+)
+                 
                         if let windowScene = UIApplication.shared.connectedScenes
                             .compactMap({ $0 as? UIWindowScene })
                             .first,
@@ -83,7 +79,6 @@ struct AccountView: View {
                     Button("إلغاء", role: .cancel) {}
                 }
 
-                // 🔶 نص أسفل الصفحة
                 Text("سالك – الإصدار 1.1")
                     .font(.system(size: 12))
                     .foregroundColor(.gray.opacity(0.6))
@@ -94,9 +89,6 @@ struct AccountView: View {
     }
 }
 
-//////////////////////////////////////////////////////////
-// MARK: - بطاقة الحساب
-//////////////////////////////////////////////////////////
 
 struct AccountHeaderView: View {
 
@@ -111,7 +103,6 @@ struct AccountHeaderView: View {
 
         HStack(spacing: 14) {
 
-            // أيقونة المستخدم الرمادية
             ZStack {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(Color(.systemGray6))
@@ -142,7 +133,6 @@ struct AccountHeaderView: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
             }
 
-            // أيقونة أول حرف من الاسم بالخضراء
             ZStack {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(Color.tabGreenDark)
@@ -162,9 +152,7 @@ struct AccountHeaderView: View {
     }
 }
 
-//////////////////////////////////////////////////////////
-// MARK: - البوكسات
-//////////////////////////////////////////////////////////
+
 
 struct StatusBox: View {
 
@@ -190,9 +178,6 @@ struct StatusBox: View {
     }
 }
 
-//////////////////////////////////////////////////////////
-// MARK: - صفوف الإعدادات
-//////////////////////////////////////////////////////////
 
 struct SettingsRow: View {
 

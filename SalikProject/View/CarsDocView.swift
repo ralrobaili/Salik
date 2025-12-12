@@ -280,7 +280,6 @@ system(size: 15, weight: .semibold))
                             }
                         }
 
-            
                     }
                     .padding()
 .background(Color.white)
